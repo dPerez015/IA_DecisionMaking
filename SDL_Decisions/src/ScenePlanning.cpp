@@ -164,7 +164,7 @@ void ScenePlanning::drawMaze()
 	}
 	else
 	{
-		//SDL_RenderCopy(TheApp::Instance()->getRenderer(), background_texture, NULL, NULL );
+		SDL_RenderCopy(TheApp::Instance()->getRenderer(), background_texture, NULL, NULL );
 	}
 }
 
@@ -240,7 +240,7 @@ bool ScenePlanning::loadTextures(char* filename_bg, char* filename_coin)
 	SDL_Surface *image = IMG_Load(filename_bg);
 	if (!image) {
 		cout << "IMG_Load: " << IMG_GetError() << endl;
-		return false;
+		//return false;
 	}
 	background_texture = SDL_CreateTextureFromSurface(TheApp::Instance()->getRenderer(), image);
 
