@@ -7,7 +7,13 @@
 #include "Vector2D.h"
 #include "utils.h"
 #include "SteeringBehavior.h"
+#include "Mining.h"
+#include "AtHome.h"
+#include "AtSaloon.h"
+#include "AtBank.h"
+#include "ScenePlanning.h"
 
+class ScenePlanning;
 
 class Agent
 {
@@ -32,8 +38,12 @@ private:
 	int sprite_w;
 	int sprite_h;
 
+	void(*currentUpdate)(Agent*,ScenePlanning*);
+	void(*currentOnExit)(Agent*,ScenePlanning*);
+	ScenePlanning* scene;
+	
 public:
-	Agent();
+	Agent(ScenePlanning*);
 	~Agent();
 	SteeringBehavior *Behavior();
 	Vector2D getPosition();
@@ -49,4 +59,14 @@ public:
 	void draw();
 	bool Agent::loadSpriteTexture(char* filename, int num_frames=1);
 	
+	template <class T>
+	void changeClass() {
+		if (currentUpdate != T::Update) {
+			currentOnExit(this,scene);
+			currentUpdate = T::Update;
+			currentOnExit = T::onExit;
+			T::onEnter(this,scene);
+		}
+	}
+
 };

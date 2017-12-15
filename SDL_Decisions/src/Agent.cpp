@@ -2,7 +2,7 @@
 
 using namespace std;
 
-Agent::Agent() : sprite_texture(0),
+Agent::Agent(ScenePlanning* s) : sprite_texture(0),
                  position(Vector2D(100, 100)),
 	             target(Vector2D(1000, 100)),
 	             velocity(Vector2D(0,0)),
@@ -17,6 +17,11 @@ Agent::Agent() : sprite_texture(0),
 	             draw_sprite(false)
 {
 	steering_behavior = new SteeringBehavior;
+	scene = s;
+	Mining::onEnter(this, scene);
+	currentOnExit = Mining::onExit;
+	currentUpdate = Mining::Update;
+	printText = false;
 }
 
 Agent::~Agent()
@@ -87,6 +92,15 @@ void Agent::update(Vector2D steering_force, float dtime, SDL_Event *event)
 	case SDL_KEYDOWN:
 		if (event->key.keysym.scancode == SDL_SCANCODE_SPACE)
 			draw_sprite = !draw_sprite;
+		else if (event->key.keysym.scancode == SDL_SCANCODE_Z)
+			changeClass<AtHome>();
+		else if (event->key.keysym.scancode == SDL_SCANCODE_X)
+			changeClass<AtSaloon>();
+		else if (event->key.keysym.scancode == SDL_SCANCODE_V)
+			changeClass<AtBank>();
+		else if (event->key.keysym.scancode == SDL_SCANCODE_C)
+			changeClass<Mining>();
+
 		break;
 	default:
 		break;
@@ -99,7 +113,7 @@ void Agent::update(Vector2D steering_force, float dtime, SDL_Event *event)
 
 	position = position + velocity * dtime;
 
-
+	currentUpdate(this,scene);
 	// Update orientation
 	if (velocity.Length()>0)
 		orientation = (float)(atan2(velocity.y, velocity.x) * RAD2DEG);

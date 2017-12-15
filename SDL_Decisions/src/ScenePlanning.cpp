@@ -13,7 +13,7 @@ ScenePlanning::ScenePlanning()
 
 	srand((unsigned int)time(NULL));
 
-	Agent *agent = new Agent;
+	Agent *agent = new Agent(this);
 	agent->loadSpriteTexture("../res/soldier.png", 4);
 	agents.push_back(agent);
 
@@ -238,12 +238,12 @@ void ScenePlanning::initMaze()
 bool ScenePlanning::loadTextures(char* filename_bg, char* filename_coin)
 {
 	SDL_Surface *image = IMG_Load(filename_bg);
-	if (!image) {
+	/*if (!image) {
 		cout << "IMG_Load: " << IMG_GetError() << endl;
 		//return false;
 	}
 	background_texture = SDL_CreateTextureFromSurface(TheApp::Instance()->getRenderer(), image);
-
+	*/
 	if (image)
 		SDL_FreeSurface(image);
 
