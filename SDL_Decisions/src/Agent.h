@@ -43,6 +43,17 @@ private:
 	ScenePlanning* scene;
 	
 public:
+	//variables de l'exercici 1
+	int thirsty = 10;
+	int minThirsty = 4;
+	int gold = 0;
+	int maxGold = 3;
+	int wealthy = 0;
+	int maxWealthy = 10;
+	float rested = 0;
+	float maxRested = 5000;
+
+
 	Agent(ScenePlanning*);
 	~Agent();
 	SteeringBehavior *Behavior();

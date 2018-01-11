@@ -6,6 +6,7 @@ void AtHome::onEnter(Agent* agent, ScenePlanning* scene) {
 
 void AtHome::Update(Agent* agent, ScenePlanning* scene) {
 	std::cout << "Estoy en casa \n";
+	
 }
 
 void AtHome::onExit(Agent* agent, ScenePlanning* scene) {
