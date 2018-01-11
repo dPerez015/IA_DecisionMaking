@@ -10,5 +10,5 @@ void AtSaloon::Update(Agent* agent, ScenePlanning* scene) {
 }
 
 void AtSaloon::onExit(Agent* agent, ScenePlanning* scene) {
-	std::cout << "me voy del bar"
+	std::cout << "me voy del bar";
 }

@@ -21,7 +21,7 @@ Agent::Agent(ScenePlanning* s) : sprite_texture(0),
 	Mining::onEnter(this, scene);
 	currentOnExit = Mining::onExit;
 	currentUpdate = Mining::Update;
-	printText = false;
+	//printText = false;
 }
 
 Agent::~Agent()
