@@ -14,6 +14,7 @@ public:
 	void update(float dtime, SDL_Event *event);
 	void draw();
 	const char* getTitle();
+	float deltaTime;
 private:
 	std::vector<Agent*> agents;
 	Vector2D coinPosition;

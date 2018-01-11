@@ -52,6 +52,7 @@ public:
 	int maxWealthy = 10;
 	float rested = 0;
 	float maxRested = 5000;
+	float timeCounter =0;
 
 
 	Agent(ScenePlanning*);
