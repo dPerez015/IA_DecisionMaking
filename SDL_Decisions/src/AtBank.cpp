@@ -3,6 +3,8 @@
 void AtBank::onEnter(Agent* agent, ScenePlanning* scene) {
 	std::cout << "Entro al banco\n";
 	agent->timeCounter = 0;
+	Vector2D posBank = { 950, 520 };
+	scene->path.points = Aestrella::search(scene->findInGraph(agent->getPosition()), scene->pix2cell(posBank));
 }
 
 void AtBank::Update(Agent* agent, ScenePlanning* scene) {

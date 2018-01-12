@@ -4,6 +4,8 @@
 void AtSaloon::onEnter(Agent* agent, ScenePlanning* scene) {
 	std::cout << "Entro al bar\n";
 	agent->timeCounter = 0;
+	Vector2D posSaloon = {100, 520};
+	scene->path.points = Aestrella::search(scene->findInGraph(agent->getPosition()), scene->pix2cell(posSaloon));
 }
 
 void AtSaloon::Update(Agent* agent, ScenePlanning* scene) {
