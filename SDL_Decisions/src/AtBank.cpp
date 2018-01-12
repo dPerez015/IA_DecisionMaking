@@ -12,13 +12,12 @@ void AtBank::Update(Agent* agent, ScenePlanning* scene) {
 	if (agent->gold == 0) {
 		if (agent->wealthy < agent->maxWealthy)
 			agent->changeClass<Mining>();
-		else {
-			agent->wealthy = 0;
+		else 
 			agent->changeClass<AtHome>();
-		}
+		
 	}
 	else{
-		if (agent->timeCounter >= 1000) {
+		if (agent->timeCounter >= 1) {
 			agent->gold--;
 			agent->wealthy += agent->gold;
 			agent->timeCounter = 0;
