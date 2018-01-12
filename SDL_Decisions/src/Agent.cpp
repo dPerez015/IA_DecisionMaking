@@ -1,4 +1,5 @@
 #include "Agent.h"
+#include <SDL_ttf.h>
 
 using namespace std;
 
@@ -128,6 +129,24 @@ void Agent::update(Vector2D steering_force, float dtime, SDL_Event *event)
 
 void Agent::draw()
 {
+
+	//text test
+	TTF_Font* Sans = TTF_OpenFont("../res/arial.ttf", 24);
+	if (Sans == NULL) cout << "Arial not founs" << endl;
+	SDL_Color White = { 255, 255, 255 };
+	SDL_Surface* surfaceMessage = TTF_RenderText_Solid(Sans, "Al David Lopez li agraden els penis lelelelele", White);
+	SDL_Texture* Message = SDL_CreateTextureFromSurface(TheApp::Instance()->getRenderer(), surfaceMessage);
+	SDL_Rect Message_rect; //create a rect
+	Message_rect.x = 20;  //controls the rect's x coordinate 
+	Message_rect.y = 500; // controls the rect's y coordinte
+	Message_rect.w = 1000; // controls the width of the rect
+	Message_rect.h = 100; // controls the height of the rect
+	SDL_RenderCopy(TheApp::Instance()->getRenderer(), Message, NULL, &Message_rect);
+
+	SDL_FreeSurface(surfaceMessage);
+	SDL_DestroyTexture(Message);
+
+
 	if (draw_sprite)
 	{
 		Uint32 sprite;

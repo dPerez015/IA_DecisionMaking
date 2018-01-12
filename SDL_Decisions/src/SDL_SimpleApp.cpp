@@ -1,4 +1,5 @@
 #include "SDL_SimpleApp.h"
+#include <SDL_ttf.h>
 
 using namespace std;
 
@@ -21,10 +22,16 @@ SDL_SimpleApp::SDL_SimpleApp()
 	grid_cell_size = CELL_SIZE;
 
 	SDL_Init(SDL_INIT_VIDEO);
+	
 
 	if ((IMG_Init(IMG_INIT_PNG)&IMG_INIT_PNG) != IMG_INIT_PNG) {
 		cout << "IMG_Init: Failed to init required img support!" << endl;
 		cout << "IMG_Init: " << IMG_GetError() << endl;
+	}
+
+	if (TTF_Init() == -1)
+	{
+		cout << "SDL_ttf could not initialize! SDL_ttf Error: " << TTF_GetError() << std::endl;
 	}
 
 	window = SDL_CreateWindow("SDL Steering Behaviors",

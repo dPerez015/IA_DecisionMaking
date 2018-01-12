@@ -14,7 +14,7 @@ void AtSaloon::Update(Agent* agent, ScenePlanning* scene) {
 		agent->changeClass<Mining>();
 	}
 	else {
-		if (agent->timeCounter >= 1000) {
+		if (agent->timeCounter >= 1) {
 			agent->thirsty++;
 			agent->timeCounter = 0;
 		}
