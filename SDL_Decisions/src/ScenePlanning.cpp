@@ -25,7 +25,7 @@ ScenePlanning::ScenePlanning()
 	agents[0]->setPosition(cell2pix(rand_cell));
 
 	// set the coin in a random cell (but at least 3 cells far from the agent)
-	coinPosition = Vector2D(-1,-1);
+	
 	/*while ((!isValidCell(coinPosition)) || (Vector2D::Distance(coinPosition, rand_cell)<3)) 
 		coinPosition = Vector2D((float)(rand() % (num_cell_x - 5)) + 4, (float)(rand() % 4) + 1);*/
 	
@@ -178,9 +178,11 @@ void ScenePlanning::update(float dtime, SDL_Event *event)
 					// if we have arrived to the coin, replace it ina random cell!
 					if (pix2cell(agents[0]->getPosition()) == coinPosition)
 					{
+						agents[0]->gold++;
 						coinPosition = Vector2D(-1, -1);
 						while ((!isValidCell(coinPosition)) || (Vector2D::Distance(coinPosition, pix2cell(agents[0]->getPosition()))<3))
 							coinPosition = Vector2D((float)(rand() % (num_cell_x-5))+4, (float)(rand() % 4)+1);
+							
 					}
 				}
 				else

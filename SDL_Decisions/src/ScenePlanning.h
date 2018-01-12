@@ -24,12 +24,13 @@ public:
 	Vector2D pix2cell(Vector2D pix);
 	bool isValidCell(Vector2D cell);
 	Node* findInGraph(Vector2D position);
+	int currentTargetIndex;
 	Vector2D coinPosition;
 private:
 	std::vector<Agent*> agents;
 	
 	Vector2D currentTarget;
-	int currentTargetIndex;
+	
 	
 	int num_cell_x;
 	int num_cell_y;
