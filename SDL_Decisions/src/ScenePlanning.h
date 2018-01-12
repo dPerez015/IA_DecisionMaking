@@ -4,6 +4,8 @@
 #include "Scene.h"
 #include "Agent.h"
 #include "Path.h"
+#include "Node.h"
+#include "Aestrella.h"
 
 class ScenePlanning :
 	public Scene
@@ -35,5 +37,17 @@ private:
 	Vector2D cell2pix(Vector2D cell);
 	Vector2D pix2cell(Vector2D pix);
 	bool isValidCell(Vector2D cell);
+
+	std::vector<std::vector<Node>> graph;
+	void createGraph();
+	int wallsOnCollumn(int column);
+	int wallsOnCollumn(int column, int row);
+	Node* findInGraph(Vector2D position);
+
+	//debugGraph
+	void drawGraph();
+
+	//debug busqueda
+	void drawGraphConexions();
 
 };

@@ -4,11 +4,12 @@ using namespace std;
 
 ScenePlanning::ScenePlanning()
 {
-	draw_grid = false;
+	draw_grid = true;
 
 	num_cell_x = SRC_WIDTH / CELL_SIZE;
 	num_cell_y = SRC_HEIGHT / CELL_SIZE;
 	initMaze();
+	createGraph();
 	loadTextures("../res/maze.png", "../res/coin.png");
 
 	srand((unsigned int)time(NULL));
@@ -33,6 +34,90 @@ ScenePlanning::ScenePlanning()
 	currentTarget = Vector2D(0, 0);
 	currentTargetIndex = -1;
 
+	Aestrella::init(num_cell_x,num_cell_y);
+}
+
+int ScenePlanning::wallsOnCollumn(int column) {
+	int ret = 0;
+	for (int i = 0; i < num_cell_y; i++) {
+		if (terrain[column][i] == 0) {
+			ret++;
+		}
+	}
+	return ret;
+}
+
+int ScenePlanning::wallsOnCollumn(int column, int row) {
+	int ret = 0;
+	for (int i = row - 1; i >= 0; i--) {
+		if (terrain[column][i] == 0)
+			ret++;
+	}
+	return ret;
+}
+
+void ScenePlanning::createGraph() {
+	for (int i = 0; i < num_cell_x; i++) {
+
+		std::vector<Node> graphCol;
+		for (int j = 0; j < num_cell_y; j++) {
+			if (terrain[i][j] != 0) {
+				Node node;
+				node.position = cell2pix(Vector2D(i, j));
+				node.pes = terrain[i][j];
+				node.previousNode = nullptr;
+				graphCol.push_back(node);
+			}
+		}
+		graph.push_back(graphCol);
+	}
+
+	int jGraph = 0;
+
+	for (int i = 0; i < num_cell_x; i++) {
+		jGraph = 0;
+		for (int j = 0; j < num_cell_y; j++) {
+			if (terrain[i][j] != 0) {
+
+				if (terrain[(i + 1) % num_cell_x][j] != 0) {
+					int wallsNextCollumn = wallsOnCollumn((i + 1) % num_cell_x, j);
+					graph[i][jGraph].conexiones.push_back(&graph[(i + 1) % num_cell_x][j - wallsNextCollumn]);
+					graph[(i + 1) % num_cell_x][j - wallsNextCollumn].conexiones.push_back(&graph[i][jGraph]);
+				}
+
+				if (terrain[i][(j + 1) % num_cell_y] != 0) {
+					graph[i][jGraph].conexiones.push_back(&graph[i][(jGraph + 1) % graph[i].size()]);
+					graph[i][(jGraph + 1) % graph[i].size()].conexiones.push_back(&graph[i][jGraph]);
+				}
+				jGraph++;
+			}
+		}
+	}
+}
+
+Node* ScenePlanning::findInGraph(Vector2D position) {
+	Vector2D predictedPos = pix2cell(position);
+
+	return &graph[predictedPos.x][predictedPos.y - wallsOnCollumn(predictedPos.x, predictedPos.y)];
+}
+
+void ScenePlanning::drawGraph() {
+	for (int i = 0; i < num_cell_x; i++) {
+		for (int j = 0; j < graph[i].size(); j++) {
+			draw_circle(TheApp::Instance()->getRenderer(), graph[i][j].position.x, graph[i][j].position.y, (CELL_SIZE - 1) / 2, 0, 255, 255, 255);
+			for (int h = 0; h < graph[i][j].conexiones.size(); h++)
+				SDL_RenderDrawLine(TheApp::Instance()->getRenderer(), graph[i][j].position.x, graph[i][j].position.y, graph[i][j].conexiones[h]->position.x, graph[i][j].conexiones[h]->position.y);
+		}
+	}
+}
+void ScenePlanning::drawGraphConexions() {
+	for (int i = 0; i < graph.size(); i++) {
+		for (int j = 0; j < graph[i].size(); j++) {
+			if (graph[i][j].previousNode != nullptr)
+				SDL_RenderDrawLine(TheApp::Instance()->getRenderer(), graph[i][j].position.x, graph[i][j].position.y, graph[i][j].previousNode->position.x, graph[i][j].previousNode->position.y);
+		}
+
+	}
 }
 
 ScenePlanning::~ScenePlanning()
@@ -61,7 +146,7 @@ void ScenePlanning::update(float dtime, SDL_Event *event)
 	case SDL_MOUSEBUTTONDOWN:
 		if (event->button.button == SDL_BUTTON_LEFT)
 		{
-			Vector2D cell = pix2cell(Vector2D((float)(event->button.x), (float)(event->button.y)));
+			/*Vector2D cell = pix2cell(Vector2D((float)(event->button.x), (float)(event->button.y)));
 			if (isValidCell(cell))
 			{
 				if (path.points.size() > 0)
@@ -69,7 +154,8 @@ void ScenePlanning::update(float dtime, SDL_Event *event)
 						break;
 
 				path.points.push_back(cell2pix(cell));
-			}
+			}*/
+			path.points=Aestrella::search(findInGraph(agents[0]->getPosition()), pix2cell(Vector2D((float)(event->button.x), (float)(event->button.y))));
 		}
 		break;
 	default:
@@ -126,6 +212,9 @@ void ScenePlanning::draw()
 
 	if (draw_grid)
 	{
+
+		//drawGraph();
+		//drawGraphConexions();
 		SDL_SetRenderDrawColor(TheApp::Instance()->getRenderer(), 255, 255, 255, 127);
 		for (int i = 0; i < SRC_WIDTH; i+=CELL_SIZE)
 		{
