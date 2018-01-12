@@ -37,6 +37,9 @@ private:
 	std::vector<SDL_Rect> maze_rects;
 	void drawMaze();
 	void drawCoin();
+	void drawSaloon();
+	void drawHouse();
+	void drawBank();
 	SDL_Texture *background_texture;
 	SDL_Texture *coin_texture;
 	void initMaze();
@@ -48,7 +51,6 @@ private:
 	void createGraph();
 	int wallsOnCollumn(int column);
 	int wallsOnCollumn(int column, int row);
-	Node* findInGraph(Vector2D position);
 
 	//debugGraph
 	void drawGraph();
