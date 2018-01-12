@@ -161,15 +161,15 @@ void Agent::draw()
 	SDL_Surface* surfaceMessage = TTF_RenderText_Solid(Sans, "Ferran puta", White);
 	SDL_Texture* Message = SDL_CreateTextureFromSurface(TheApp::Instance()->getRenderer(), surfaceMessage);
 	SDL_Rect Message_rect; //create a rect
-	Message_rect.x = 20;  //controls the rect's x coordinate 
-	Message_rect.y = 500; // controls the rect's y coordinte
+	Message_rect.x = 0;  //controls the rect's x coordinate 
+	Message_rect.y = 0; // controls the rect's y coordinte
 	Message_rect.w = 1000; // controls the width of the rect
 	Message_rect.h = 100; // controls the height of the rect
 	SDL_RenderCopy(TheApp::Instance()->getRenderer(), Message, NULL, &Message_rect);
 
 	SDL_FreeSurface(surfaceMessage);
 	SDL_DestroyTexture(Message);
-
+	
 
 	if (draw_sprite)
 	{
