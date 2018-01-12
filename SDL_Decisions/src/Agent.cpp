@@ -161,7 +161,7 @@ void Agent::draw()
 	TTF_Font* Sans = TTF_OpenFont("../res/arial.ttf", 24);
 	if (Sans == NULL) cout << "Arial not founs" << endl;
 	SDL_Color White = { 255, 255, 255 };
-	SDL_Surface* surfaceMessage = TTF_RenderText_Solid(Sans, "Ferran puta", White);
+	SDL_Surface* surfaceMessage = TTF_RenderText_Solid(Sans, "Text check", White);
 	SDL_Texture* Message = SDL_CreateTextureFromSurface(TheApp::Instance()->getRenderer(), surfaceMessage);
 	SDL_Rect Message_rect; //create a rect
 	Message_rect.x = 0;  //controls the rect's x coordinate 
