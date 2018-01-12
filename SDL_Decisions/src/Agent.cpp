@@ -154,25 +154,86 @@ void Agent::update(Vector2D steering_force, float dtime, SDL_Event *event)
 	if (position.y > TheApp::Instance()->getWinSize().y) position.y = 0;
 }
 
-void Agent::draw()
-{
+void Agent::drawText() {
 
-	//text test
-	TTF_Font* Sans = TTF_OpenFont("../res/arial.ttf", 24);
+	std::string thirstyText = "Thirsty state: " + std::to_string(thirsty);
+	std::string goldText = "Gold State: " + std::to_string(gold);
+	std::string restText = "Rest state: " + std::to_string(rested);
+	std::string counterText = "Counter state: " + std::to_string(timeCounter);
+
+	int heightTxt = 40;
+
+	//First Text
+	TTF_Font* Sans = TTF_OpenFont("../res/arial.ttf", 12);
 	if (Sans == NULL) cout << "Arial not founs" << endl;
 	SDL_Color White = { 255, 255, 255 };
-	SDL_Surface* surfaceMessage = TTF_RenderText_Solid(Sans, "Text check", White);
+	SDL_Surface* surfaceMessage = TTF_RenderText_Solid(Sans, "Miner characteristics:", White);
 	SDL_Texture* Message = SDL_CreateTextureFromSurface(TheApp::Instance()->getRenderer(), surfaceMessage);
 	SDL_Rect Message_rect; //create a rect
-	Message_rect.x = 0;  //controls the rect's x coordinate 
+	Message_rect.x = 1000;  //controls the rect's x coordinate 
 	Message_rect.y = 0; // controls the rect's y coordinte
-	Message_rect.w = 1000; // controls the width of the rect
-	Message_rect.h = 100; // controls the height of the rect
+	Message_rect.w = 200; // controls the width of the rect
+	Message_rect.h = heightTxt; // controls the height of the rect
 	SDL_RenderCopy(TheApp::Instance()->getRenderer(), Message, NULL, &Message_rect);
 
 	SDL_FreeSurface(surfaceMessage);
 	SDL_DestroyTexture(Message);
-	
+
+	//Thirsty text
+	SDL_Surface* surfaceMessageThirsty = TTF_RenderText_Solid(Sans, thirstyText.c_str(), White);
+	SDL_Texture* MessageThirsty = SDL_CreateTextureFromSurface(TheApp::Instance()->getRenderer(), surfaceMessageThirsty);
+	SDL_Rect Message_rectThirsty; //create a rect
+	Message_rectThirsty.x = 1000;  //controls the rect's x coordinate 
+	Message_rectThirsty.y = 100; // controls the rect's y coordinte
+	Message_rectThirsty.w = 200; // controls the width of the rect
+	Message_rectThirsty.h = heightTxt; // controls the height of the rect
+	SDL_RenderCopy(TheApp::Instance()->getRenderer(), MessageThirsty, NULL, &Message_rectThirsty);
+
+	SDL_FreeSurface(surfaceMessageThirsty);
+	SDL_DestroyTexture(MessageThirsty);
+
+	//Gold
+	SDL_Surface* surfaceMessageGold = TTF_RenderText_Solid(Sans, goldText.c_str(), White);
+	SDL_Texture* MessageGold = SDL_CreateTextureFromSurface(TheApp::Instance()->getRenderer(), surfaceMessageGold);
+	SDL_Rect Message_rectGold; //create a rect
+	Message_rectGold.x = 1000;  //controls the rect's x coordinate 
+	Message_rectGold.y = 200; // controls the rect's y coordinte
+	Message_rectGold.w = 100; // controls the width of the rect
+	Message_rectGold.h = heightTxt; // controls the height of the rect
+	SDL_RenderCopy(TheApp::Instance()->getRenderer(), MessageGold, NULL, &Message_rectGold);
+
+	SDL_FreeSurface(surfaceMessageGold);
+	SDL_DestroyTexture(MessageGold);
+	//Rest
+	SDL_Surface* surfaceMessageRest = TTF_RenderText_Solid(Sans, restText.c_str(), White);
+	SDL_Texture* MessageRest = SDL_CreateTextureFromSurface(TheApp::Instance()->getRenderer(), surfaceMessageRest);
+	SDL_Rect Message_rectRest; //create a rect
+	Message_rectRest.x = 1000;  //controls the rect's x coordinate 
+	Message_rectRest.y = 300; // controls the rect's y coordinte
+	Message_rectRest.w = 200; // controls the width of the rect
+	Message_rectRest.h = heightTxt; // controls the height of the rect
+	SDL_RenderCopy(TheApp::Instance()->getRenderer(), MessageRest, NULL, &Message_rectRest);
+
+	SDL_FreeSurface(surfaceMessageRest);
+	SDL_DestroyTexture(MessageRest);
+	//Counter
+	SDL_Surface* surfaceMessageCounter = TTF_RenderText_Solid(Sans, counterText.c_str(), White);
+	SDL_Texture* MessageCounter = SDL_CreateTextureFromSurface(TheApp::Instance()->getRenderer(), surfaceMessageCounter);
+	SDL_Rect Message_rectCounter; //create a rect
+	Message_rectCounter.x = 1000;  //controls the rect's x coordinate 
+	Message_rectCounter.y = 400; // controls the rect's y coordinte
+	Message_rectCounter.w = 200; // controls the width of the rect
+	Message_rectCounter.h = heightTxt; // controls the height of the rect
+	SDL_RenderCopy(TheApp::Instance()->getRenderer(), MessageCounter, NULL, &Message_rectCounter);
+
+	SDL_FreeSurface(surfaceMessageCounter);
+	SDL_DestroyTexture(MessageCounter);
+}
+
+void Agent::draw()
+{
+
+	drawText();
 
 	if (draw_sprite)
 	{
