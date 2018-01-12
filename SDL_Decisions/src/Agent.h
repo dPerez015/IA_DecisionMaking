@@ -51,9 +51,9 @@ public:
 	int maxGold = 3;
 	int wealthy = 0;
 	int maxWealthy = 10;
-	float rested = 0;
-	float maxRested = 5000;
+	float restingTime = 5;
 	float timeCounter =0;
+	int state = 0;
 
 	//GOAP
 	std::vector<Action*> posibleActions;
@@ -74,6 +74,7 @@ public:
 	void setColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
 	void update(Vector2D steering_force, float dtime, SDL_Event *event);
 	static void voidUpdate(Agent*, ScenePlanning*);
+	void drawText();
 	void draw();
 	bool Agent::loadSpriteTexture(char* filename, int num_frames=1);
 	
