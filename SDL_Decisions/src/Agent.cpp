@@ -24,6 +24,30 @@ Agent::Agent(ScenePlanning* s) : sprite_texture(0),
 	currentUpdate = Mining::Update;
 	//printText = false;
 }
+Agent::Agent() : sprite_texture(0),
+				position(Vector2D(100, 100)),
+				target(Vector2D(1000, 100)),
+				velocity(Vector2D(0, 0)),
+				mass(0.1f),
+				max_force(150),
+				max_velocity(200),
+				orientation(0),
+				color({ 255,255,255,255 }),
+				sprite_num_frames(0),
+				sprite_w(0),
+				sprite_h(0),
+				draw_sprite(false) 
+{
+	steering_behavior = new SteeringBehavior;
+	//scene = s;
+	
+	currentOnExit = voidUpdate;
+	currentUpdate = voidUpdate;
+
+}
+void Agent::voidUpdate(Agent*, ScenePlanning*) {
+
+}
 
 Agent::~Agent()
 {

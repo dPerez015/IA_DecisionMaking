@@ -4,6 +4,7 @@
 
 #include "SDL_SimpleApp.h"
 #include "ScenePlanning.h"
+#include "SceneGoap.h"
 
 #define FRAMES_PER_SEC 30
 
@@ -45,6 +46,8 @@ int main(int argc, char ** argv)
 			}
 			if (event.key.keysym.scancode == SDL_SCANCODE_2)
 			{
+				curr_scene = new SceneGoap;
+				app->setWindowTitle(curr_scene->getTitle());
 			}
 			if (event.key.keysym.scancode == SDL_SCANCODE_3)
 			{
