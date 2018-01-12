@@ -1,6 +1,7 @@
 #pragma once
 #include "Vector2D.h"
 #include "SDL_SimpleApp.h"
+#include "GoapNode.h"
 
 class  SceneEnemy;
 struct Heuristics {	
@@ -12,5 +13,6 @@ struct Heuristics {
 
 	static int manhatanDistance(Vector2D init, Vector2D fin);
 
+	static int goapHeuristic(WorldState& current, WorldState& objective);
 
 };

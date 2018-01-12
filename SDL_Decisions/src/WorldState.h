@@ -1,5 +1,6 @@
 #pragma once
 #include "WorldStateVariables.h"
+#include "Action.h"
 
 struct WorldState {
 	MaskedBitArray state;

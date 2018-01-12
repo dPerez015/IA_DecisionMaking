@@ -42,6 +42,49 @@ void Aestrella::draw() {
 	}
 }
 
+std::string Aestrella::Goap(WorldState inici, WorldState goal, std::vector<Action*>& posibleActions) {
+	std::vector<GoapNode>nodes;
+	std::multimap<float, GoapNode*> frontier;
+	std::set<int> visitedStates;
+	
+	GoapNode startNode(inici);
+	visitedStates.insert(inici.state.bits);
+	nodes.push_back(startNode);
+	frontier.emplace(0, &startNode);
+	bool notFound = true;
+	std::string result = "No hay camino";
+
+	std::multimap<float, GoapNode*>::iterator it;
+	while (notFound && frontier.size() > 0) {
+		it = frontier.begin();
+		for (int i = 0; i < posibleActions.size(); i++) {
+			if (goal.checkEquals(it->second->state)) {
+				GoapNode* goingBackNode=it->second;
+				result = "";
+				while (goingBackNode->prevNode != nullptr) {
+					result = result + goingBackNode->previusAction->definition;
+					goingBackNode = goingBackNode->prevNode;
+				}
+				notFound = false;
+			}
+			else {
+				if (it->second->state.checkAction(posibleActions[i])) {
+					GoapNode newNode(posibleActions[i], it->first, it->second);
+
+					if (visitedStates.find(newNode.state.state.bits) == visitedStates.end()) {
+						nodes.push_back(newNode);
+						frontier.emplace(newNode.acumulatedCost + Heuristics::goapHeuristic(newNode.state, goal), &newNode);
+						visitedStates.insert(newNode.state.state.bits);
+					}
+				}
+			}
+		}
+		it=frontier.erase(it);
+	}
+	return result;
+
+}
+
 void Aestrella::fillPath(Node* end) {
 	path.clear();
 	while (end != nullptr) {

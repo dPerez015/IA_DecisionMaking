@@ -16,5 +16,11 @@ struct GoapNode{
 		acumulatedCost = costTillNow + act->cost;
 		prevNode = prev;
 	}
+	GoapNode(WorldState start) {
+		state = start;
+		previusAction = nullptr;
+		acumulatedCost = 0;
+		prevNode = nullptr;
+	}
 
 };

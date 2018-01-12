@@ -18,4 +18,16 @@ int Heuristics::manhatanDistance(Vector2D init, Vector2D fin) {
 		}
 
 	}
+
+int Heuristics::goapHeuristic(WorldState& current, WorldState& objective) {
+	
+	int position = 1;
+	int diferences = 0;
+	for (int i = 0; i < 9; i++) {
+		if ((current.state.bits & position) != (objective.state.bits & position))
+			diferences++;
+		position *= 2;
+	}
+	return diferences;
+}
 	

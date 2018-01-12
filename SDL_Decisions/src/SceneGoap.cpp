@@ -39,12 +39,28 @@ SceneGoap::SceneGoap()
 	//Goap
 	//worldStateSetup
 	worldState.add(WorldStateVariables::AgentAlive, true);
-	
-	worldState.add(WorldStateVariables::AgentHasBomb, false);
-
 	worldState.add(WorldStateVariables::AgentArmed, true);
-
+	worldState.add(WorldStateVariables::WeaponCharged, false);
+	worldState.add(WorldStateVariables::AgentHasBomb, false);
+	worldState.add(WorldStateVariables::EnemyVisible, false);
+	worldState.add(WorldStateVariables::EnemyAligned, false);
+	worldState.add(WorldStateVariables::EnemyNear, false);
 	worldState.add(WorldStateVariables::EnemyAlive, true);
+	worldState.add(WorldStateVariables::BombNearEnemy, false);
+
+	WorldState finalState;
+	finalState.state.bits = 0;
+	finalState.state.mask = 0;
+	finalState.add(WorldStateVariables::AgentAlive, true);
+	finalState.add(WorldStateVariables::AgentArmed, true);
+	finalState.add(WorldStateVariables::WeaponCharged, true);
+	finalState.add(WorldStateVariables::AgentHasBomb, false);
+	finalState.add(WorldStateVariables::EnemyVisible, true);
+	finalState.add(WorldStateVariables::EnemyAligned, true);
+	finalState.add(WorldStateVariables::EnemyNear, true);
+	finalState.add(WorldStateVariables::EnemyAlive, false);
+	finalState.add(WorldStateVariables::BombNearEnemy, false);
+
 
 	//actions Setup
 	setUpPossibleActions();
@@ -59,6 +75,12 @@ SceneGoap::SceneGoap()
 	agents[0]->addAction(&posibleActions.find("Alejarse")->second);
 	agents[0]->addAction(&posibleActions.find("GetBomb")->second);
 
+
+	std::string plan=Aestrella::Goap(worldState, finalState, agents[0]->posibleActions);
+
+	cout << plan;
+
+	/*
 	bool canExplore = worldState.checkAction(&posibleActions.find("Explorar")->second);
 	bool canThrowGranade = worldState.checkAction(&posibleActions.find("Lanzar")->second);
 	bool canGetGranade = worldState.checkAction(&posibleActions.find("GetBomb")->second);
@@ -66,7 +88,10 @@ SceneGoap::SceneGoap()
 	canThrowGranade = worldState.checkAction(&posibleActions.find("Lanzar")->second);
 	worldState.applyAction(&posibleActions.find("Acercarse")->second);
 	worldState.applyAction(&posibleActions.find("Explorar")->second);
-	canThrowGranade = worldState.checkAction(&posibleActions.find("Lanzar")->second);
+	canThrowGranade = worldState.checkAction(&posibleActions.find("Lanzar")->second);*/
+
+
+
 	/*
 	worldState.applyAction(&posibleActions.find("GetBomb")->second);
 	worldState.applyAction(&posibleActions.find("Disparar")->second);
@@ -129,7 +154,6 @@ void SceneGoap::setUpPossibleActions() {
 	//cargarArma
 	action.cost = 1;
 	action.definition = "Recargar\n";
-	action.preConditions.add(WorldStateVariables::AgentAlive, true);
 	action.preConditions.add(WorldStateVariables::AgentArmed, true);
 	action.preConditions.add(WorldStateVariables::EnemyNear, false);
 	action.reaction.add(WorldStateVariables::WeaponCharged, true);
