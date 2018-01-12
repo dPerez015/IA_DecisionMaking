@@ -74,6 +74,7 @@ public:
 	void setColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
 	void update(Vector2D steering_force, float dtime, SDL_Event *event);
 	static void voidUpdate(Agent*, ScenePlanning*);
+	void drawText();
 	void draw();
 	bool Agent::loadSpriteTexture(char* filename, int num_frames=1);
 	
