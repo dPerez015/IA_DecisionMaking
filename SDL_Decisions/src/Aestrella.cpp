@@ -42,15 +42,15 @@ void Aestrella::draw() {
 	}
 }
 
-std::string Aestrella::Goap(WorldState inici, WorldState goal, std::vector<Action*>& posibleActions) {
-	std::vector<GoapNode>nodes;
+std::string Aestrella::Goap(WorldState inici, WorldState goal, std::vector<Action*> posibleActions) {
+	std::list<GoapNode*>nodes;
 	std::multimap<float, GoapNode*> frontier;
 	std::set<int> visitedStates;
 	
-	GoapNode startNode(inici);
+	GoapNode* startNode=new GoapNode(inici);
 	visitedStates.insert(inici.state.bits);
 	nodes.push_back(startNode);
-	frontier.emplace(0, &startNode);
+	frontier.emplace(0, startNode);
 	bool notFound = true;
 	std::string result = "No hay camino";
 
@@ -62,19 +62,22 @@ std::string Aestrella::Goap(WorldState inici, WorldState goal, std::vector<Actio
 				GoapNode* goingBackNode=it->second;
 				result = "";
 				while (goingBackNode->prevNode != nullptr) {
-					result = result + goingBackNode->previusAction->definition;
+					result = result + goingBackNode->previusAction.definition;
 					goingBackNode = goingBackNode->prevNode;
 				}
 				notFound = false;
 			}
 			else {
 				if (it->second->state.checkAction(posibleActions[i])) {
-					GoapNode newNode(posibleActions[i], it->first, it->second);
-
-					if (visitedStates.find(newNode.state.state.bits) == visitedStates.end()) {
+					GoapNode* newNode=new GoapNode(posibleActions[i], it->second->acumulatedCost, it->second);
+					//nodes.emplace_back(posibleActions[i], it->second->acumulatedCost, it->second);
+					if (visitedStates.find(newNode->state.state.bits) == visitedStates.end()) {
 						nodes.push_back(newNode);
-						frontier.emplace(newNode.acumulatedCost + Heuristics::goapHeuristic(newNode.state, goal), &newNode);
-						visitedStates.insert(newNode.state.state.bits);
+						int heuristics = Heuristics::goapHeuristic(newNode->state, goal);
+						int costAcumulated = newNode->acumulatedCost;
+						int cost = costAcumulated+ heuristics;
+						frontier.emplace(newNode->acumulatedCost + Heuristics::goapHeuristic(newNode->state, goal), newNode);
+						visitedStates.insert(newNode->state.state.bits);
 					}
 				}
 			}

@@ -8,6 +8,7 @@
 #include "SDL_SimpleApp.h"
 #include <time.h>
 #include <set>
+#include <list>
 #include "Heuristics.h"
 
 struct AstarCost {
@@ -34,7 +35,7 @@ private:
 	static float pathCost; //util per a la cerca de grup
 
 public:
-	static std::string Goap(WorldState init, WorldState fin, std::vector<Action*>&);
+	static std::string Goap(WorldState init, WorldState fin, std::vector<Action*>);
 	static void init(int, int);
 	static void fillPath(Node*);
 	static void fillPath(Node*,int&);

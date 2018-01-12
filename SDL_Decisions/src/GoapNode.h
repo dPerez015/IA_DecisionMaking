@@ -5,20 +5,24 @@
 
 struct GoapNode{
 	WorldState state;
-	Action* previusAction;
+	Action previusAction;
 	float acumulatedCost;
 	GoapNode* prevNode;
 
 	GoapNode(Action* act,float costTillNow,GoapNode* prev) {
 		state = prev->state;
-		state.applyAction(act);
-		previusAction = act;
-		acumulatedCost = costTillNow + act->cost;
+		previusAction.cost = act->cost;
+		previusAction.definition = act->definition;
+		previusAction.preConditions = act->preConditions;
+		previusAction.reaction = act->reaction;
+		state.applyAction(previusAction);
+		//previusAction = act;
+		acumulatedCost = costTillNow + previusAction.cost;
 		prevNode = prev;
 	}
 	GoapNode(WorldState start) {
 		state = start;
-		previusAction = nullptr;
+		//previusAction = null;
 		acumulatedCost = 0;
 		prevNode = nullptr;
 	}

@@ -42,8 +42,13 @@ private:
 
 	//Planning
 	WorldState worldState;
+	WorldState endState;
 	std::unordered_map <std::string,Action> posibleActions;
 
 	void setUpWorldState();
 	void setUpPossibleActions();
+	void setUpGoal();
+
+	void plan();
+	
 };

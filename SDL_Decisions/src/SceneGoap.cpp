@@ -38,16 +38,9 @@ SceneGoap::SceneGoap()
 
 	//Goap
 	//worldStateSetup
-	worldState.add(WorldStateVariables::AgentAlive, true);
-	worldState.add(WorldStateVariables::AgentArmed, true);
-	worldState.add(WorldStateVariables::WeaponCharged, false);
-	worldState.add(WorldStateVariables::AgentHasBomb, false);
-	worldState.add(WorldStateVariables::EnemyVisible, false);
-	worldState.add(WorldStateVariables::EnemyAligned, false);
-	worldState.add(WorldStateVariables::EnemyNear, false);
-	worldState.add(WorldStateVariables::EnemyAlive, true);
-	worldState.add(WorldStateVariables::BombNearEnemy, false);
+	
 
+	/*
 	WorldState finalState;
 	finalState.state.bits = 0;
 	finalState.state.mask = 0;
@@ -56,11 +49,11 @@ SceneGoap::SceneGoap()
 	finalState.add(WorldStateVariables::WeaponCharged, true);
 	finalState.add(WorldStateVariables::AgentHasBomb, false);
 	finalState.add(WorldStateVariables::EnemyVisible, true);
-	finalState.add(WorldStateVariables::EnemyAligned, true);
-	finalState.add(WorldStateVariables::EnemyNear, true);
+	finalState.add(WorldStateVariables::EnemyAligned, false);
+	finalState.add(WorldStateVariables::EnemyNear, false);
 	finalState.add(WorldStateVariables::EnemyAlive, false);
-	finalState.add(WorldStateVariables::BombNearEnemy, false);
-
+	finalState.add(WorldStateVariables::BombNearEnemy, true);*/
+	
 
 	//actions Setup
 	setUpPossibleActions();
@@ -74,11 +67,12 @@ SceneGoap::SceneGoap()
 	agents[0]->addAction(&posibleActions.find("Detonar")->second);
 	agents[0]->addAction(&posibleActions.find("Alejarse")->second);
 	agents[0]->addAction(&posibleActions.find("GetBomb")->second);
+	agents[0]->addAction(&posibleActions.find("GetWeapon")->second);
 
 
-	std::string plan=Aestrella::Goap(worldState, finalState, agents[0]->posibleActions);
+	//std::string plan=Aestrella::Goap(worldState, finalState, agents[0]->posibleActions);
 
-	cout << plan;
+	//cout << plan;
 
 	/*
 	bool canExplore = worldState.checkAction(&posibleActions.find("Explorar")->second);
@@ -102,7 +96,118 @@ SceneGoap::SceneGoap()
 	bool rawCheck = worldState.checkEquals(otherState);
 	bool maskedCheck = worldState.checkEqualsMasked(otherState);
 	*/
+
 	int i = 0;
+}
+
+void SceneGoap::setUpWorldState() {
+	worldState.state.bits = 0;
+	worldState.state.mask = 0;
+	//default values que no poden ser randoms
+	worldState.add(WorldStateVariables::AgentAlive, true);
+	worldState.add(WorldStateVariables::BombNearEnemy, false);
+	worldState.add(WorldStateVariables::EnemyAlive, true);
+	worldState.add(WorldStateVariables::EnemyAligned, false);
+	
+	int random = rand();
+	if (random % 2 == 0) {
+		worldState.add(WorldStateVariables::AgentArmed, true);
+		random = rand();
+		if (random % 2)
+			worldState.add(WorldStateVariables::WeaponCharged, true);
+		else
+			worldState.add(WorldStateVariables::WeaponCharged, false);
+	}
+	else 
+		worldState.add(WorldStateVariables::AgentArmed, false);
+	
+	
+	
+	random = rand();
+	if (random % 2)
+		worldState.add(WorldStateVariables::AgentHasBomb, true);
+	else
+		worldState.add(WorldStateVariables::AgentHasBomb, false);
+	
+	random = rand();
+	if (random % 2)
+		worldState.add(WorldStateVariables::EnemyVisible, true);
+	else
+		worldState.add(WorldStateVariables::EnemyVisible, false);
+
+	random = rand();
+	if (random % 2)
+		worldState.add(WorldStateVariables::EnemyNear, true);
+	else 
+		worldState.add(WorldStateVariables::EnemyNear, false);
+	
+	cout << "Estado inicio:\n";
+	cout << worldState.makeString();
+}
+
+void SceneGoap::setUpGoal() {
+	endState.state.bits = 0;
+	endState.state.mask = 0;
+
+	endState.add(WorldStateVariables::AgentAlive, true);
+	
+	int random = rand();
+	if(random%2==0)
+		endState.add(WorldStateVariables::AgentArmed, true);
+	else 
+		endState.add(WorldStateVariables::AgentArmed, false);
+	
+	random = rand();
+	if(random%2)
+		endState.add(WorldStateVariables::WeaponCharged, true);
+	else
+		endState.add(WorldStateVariables::WeaponCharged, false);
+	
+	random = rand();
+	if (random % 2)
+		endState.add(WorldStateVariables::AgentHasBomb, true);
+	else
+		endState.add(WorldStateVariables::AgentHasBomb, false);
+	
+	random = rand();
+	if (random % 2)
+		endState.add(WorldStateVariables::EnemyVisible, true);
+	else
+		endState.add(WorldStateVariables::EnemyVisible, false);
+
+	random = rand();
+	if (random % 2)
+		endState.add(WorldStateVariables::EnemyNear, true);
+	else 
+		endState.add(WorldStateVariables::EnemyNear, false);
+	
+	random = rand();
+	if (random % 2)
+		endState.add(WorldStateVariables::BombNearEnemy, true);
+	else
+		endState.add(WorldStateVariables::BombNearEnemy, false);
+
+	random = rand();
+	if (random % 2)
+		endState.add(WorldStateVariables::EnemyAlive, true);
+	else
+		endState.add(WorldStateVariables::EnemyAlive, false);
+
+	random = rand();
+	if (random % 2)
+		endState.add(WorldStateVariables::EnemyAligned, true);
+	else
+		endState.add(WorldStateVariables::EnemyAligned, false);
+
+	cout << "\nEstado final:\n";
+	cout << endState.makeString();
+}
+
+void SceneGoap::plan() {
+	system("CLS");
+	setUpWorldState();
+	setUpGoal();
+	cout << Aestrella::Goap(worldState, endState, agents[0]->posibleActions);
 }
 
 void SceneGoap::setUpPossibleActions() {
@@ -185,11 +290,11 @@ void SceneGoap::setUpPossibleActions() {
 	//llançar granada
 	action.cost = 2;
 	action.definition = "Lanzar explosivos\n";
-	action.preConditions.add(WorldStateVariables::EnemyAlive, true);
 	action.preConditions.add(WorldStateVariables::AgentAlive, true);
 	action.preConditions.add(WorldStateVariables::AgentHasBomb, true);
 	action.preConditions.add(WorldStateVariables::EnemyVisible, true);
 	action.preConditions.add(WorldStateVariables::EnemyNear, true);
+	action.preConditions.add(WorldStateVariables::EnemyAligned, false);
 	action.reaction.add(WorldStateVariables::BombNearEnemy, true);
 	action.reaction.add(WorldStateVariables::AgentHasBomb, false);
 
@@ -204,7 +309,7 @@ void SceneGoap::setUpPossibleActions() {
 	action.definition = "Detonar explosivos\n";
 	action.preConditions.add(WorldStateVariables::AgentAlive, true);
 	action.preConditions.add(WorldStateVariables::BombNearEnemy, true);
-	action.reaction.add(WorldStateVariables::EnemyAlive, true);
+	action.reaction.add(WorldStateVariables::EnemyAlive, false);
 
 	posibleActions.emplace("Detonar", action);
 	action.preConditions.bits = 0;
@@ -233,11 +338,29 @@ void SceneGoap::setUpPossibleActions() {
 	action.preConditions.add(WorldStateVariables::AgentHasBomb, false);
 	action.preConditions.add(WorldStateVariables::EnemyNear, false);
 	action.preConditions.add(WorldStateVariables::AgentAlive, true);
+	action.preConditions.add(WorldStateVariables::EnemyAligned, false);
+	action.preConditions.add(WorldStateVariables::EnemyVisible, false);
 	action.reaction.add(WorldStateVariables::AgentHasBomb, true);
-	action.reaction.add(WorldStateVariables::EnemyAligned, false);
-	action.reaction.add(WorldStateVariables::EnemyVisible, false);
 
 	posibleActions.emplace("GetBomb", action);
+	action.preConditions.bits = 0;
+	action.preConditions.mask = 0;
+	action.reaction.bits = 0;
+	action.reaction.mask = 0;
+
+	//coger bombas
+	//get bombas
+	action.cost = 3;
+	action.definition = "Coger arma\n";
+	action.preConditions.add(WorldStateVariables::AgentArmed, false);
+	action.preConditions.add(WorldStateVariables::EnemyNear, false);
+	action.preConditions.add(WorldStateVariables::EnemyVisible, false);
+	action.preConditions.add(WorldStateVariables::EnemyAligned, false);
+	action.preConditions.add(WorldStateVariables::AgentAlive, true);
+	action.reaction.add(WorldStateVariables::AgentArmed, true);
+
+
+	posibleActions.emplace("GetWeapon", action);
 	action.preConditions.bits = 0;
 	action.preConditions.mask = 0;
 	action.reaction.bits = 0;
@@ -265,7 +388,7 @@ void SceneGoap::update(float dtime, SDL_Event *event)
 	switch (event->type) {
 	case SDL_KEYDOWN:
 		if (event->key.keysym.scancode == SDL_SCANCODE_SPACE)
-			draw_grid = !draw_grid;
+			plan();
 		break;
 	case SDL_MOUSEMOTION:
 	case SDL_MOUSEBUTTONDOWN:
