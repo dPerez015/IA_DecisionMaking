@@ -18,6 +18,12 @@ void Mining::Update(Agent* agent, ScenePlanning* scene) {
 	}
 	else {
 		//PATHFINDING CAP A LA MONEDA
+		//if (scene->path.points.size() == 0) {
+		//	scene->path.points = Aestrella::search(scene->findInGraph(agent->getPosition()),scene->pix2cell(scene->coinPosition));
+		//}
+		//else { //path size != 0, hi ha cami
+		//	//seek path target?
+		//}
 
 		if (agent->timeCounter >= 5) { //5 segons
 			agent->thirsty -= 1;
