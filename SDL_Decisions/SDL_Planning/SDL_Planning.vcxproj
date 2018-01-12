@@ -152,6 +152,7 @@
     <ClInclude Include="..\src\AtBank.h" />
     <ClInclude Include="..\src\AtHome.h" />
     <ClInclude Include="..\src\AtSaloon.h" />
+    <ClInclude Include="..\src\GoapNode.h" />
     <ClInclude Include="..\src\Heuristics.h" />
     <ClInclude Include="..\src\MaskedBitArray.h" />
     <ClInclude Include="..\src\Mining.h" />

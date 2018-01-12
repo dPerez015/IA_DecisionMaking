@@ -43,7 +43,10 @@ Agent::Agent() : sprite_texture(0),
 	
 	currentOnExit = voidUpdate;
 	currentUpdate = voidUpdate;
+}
 
+void Agent::addAction(Action* action) {
+	posibleActions.push_back(action);
 }
 void Agent::voidUpdate(Agent*, ScenePlanning*) {
 

@@ -119,6 +119,9 @@
     <ClInclude Include="..\src\WorldStateVariables.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\GoapNode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\res\spritesheet.png">

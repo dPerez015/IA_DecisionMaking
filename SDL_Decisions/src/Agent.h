@@ -12,6 +12,7 @@
 #include "AtSaloon.h"
 #include "AtBank.h"
 #include "ScenePlanning.h"
+#include "Action.h"
 
 class ScenePlanning;
 
@@ -54,6 +55,9 @@ public:
 	float maxRested = 5000;
 	float timeCounter =0;
 
+	//GOAP
+	std::vector<Action*> posibleActions;
+	void addAction(Action*);
 
 	Agent(ScenePlanning*);
 	Agent();

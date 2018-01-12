@@ -22,4 +22,32 @@ struct WorldState {
 	bool checkEquals(WorldState otherState) {
 		return state.bits == otherState.state.bits;
 	}
+
+	void applyAction(Action* action) {
+		int copyState = state.bits;
+		state.bits = 0;
+		int position = 1;
+		for (int i = 0; i < sizeof(int) * 8; i++) {
+			if (action->reaction.mask & position) {
+				state.bits = state.bits | (action->reaction.bits&position);
+			}
+			else {
+				state.bits = state.bits | (copyState & position);
+			}
+			position*=2;
+		}
+	}
+
+	bool checkAction(Action* action) {
+		int position = 1;
+		for (int i = 0; i < sizeof(int) * 8; i++) {
+			if (action->preConditions.mask & position) {
+				if ((action->preConditions.bits & position) != (state.bits & position)) {
+					return false;
+				}
+			}
+			position *= 2;
+		}
+		return true;
+	}
 };

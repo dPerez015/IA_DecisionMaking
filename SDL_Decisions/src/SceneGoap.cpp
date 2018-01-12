@@ -38,16 +38,39 @@ SceneGoap::SceneGoap()
 
 	//Goap
 	//worldStateSetup
-	worldState.add(WorldStateVariables::AgentAlive, 1);
+	worldState.add(WorldStateVariables::AgentAlive, true);
 	
-	worldState.add(WorldStateVariables::AgentHasBomb, 0);
+	worldState.add(WorldStateVariables::AgentHasBomb, false);
 
-	worldState.add(WorldStateVariables::AgentArmed, 1);
+	worldState.add(WorldStateVariables::AgentArmed, true);
+
+	worldState.add(WorldStateVariables::EnemyAlive, true);
 
 	//actions Setup
 	setUpPossibleActions();
 	
+	agents[0]->addAction(&posibleActions.find("Explorar")->second);
+	agents[0]->addAction(&posibleActions.find("Acercarse")->second);
+	agents[0]->addAction(&posibleActions.find("Apuntar")->second);
+	agents[0]->addAction(&posibleActions.find("Recargar")->second);
+	agents[0]->addAction(&posibleActions.find("Disparar")->second);
+	agents[0]->addAction(&posibleActions.find("Lanzar")->second);
+	agents[0]->addAction(&posibleActions.find("Detonar")->second);
+	agents[0]->addAction(&posibleActions.find("Alejarse")->second);
+	agents[0]->addAction(&posibleActions.find("GetBomb")->second);
+
+	bool canExplore = worldState.checkAction(&posibleActions.find("Explorar")->second);
+	bool canThrowGranade = worldState.checkAction(&posibleActions.find("Lanzar")->second);
+	bool canGetGranade = worldState.checkAction(&posibleActions.find("GetBomb")->second);
+	worldState.applyAction(&posibleActions.find("GetBomb")->second);
+	canThrowGranade = worldState.checkAction(&posibleActions.find("Lanzar")->second);
+	worldState.applyAction(&posibleActions.find("Acercarse")->second);
+	worldState.applyAction(&posibleActions.find("Explorar")->second);
+	canThrowGranade = worldState.checkAction(&posibleActions.find("Lanzar")->second);
 	/*
+	worldState.applyAction(&posibleActions.find("GetBomb")->second);
+	worldState.applyAction(&posibleActions.find("Disparar")->second);
+	
 	WorldState otherState = worldState;
 
 	otherState.add(WorldStateVariables::EnemyAlive, 1);
@@ -127,6 +150,7 @@ void SceneGoap::setUpPossibleActions() {
 	action.preConditions.add(WorldStateVariables::EnemyVisible, true);
 	action.preConditions.add(WorldStateVariables::EnemyAligned, true);
 	action.reaction.add(WorldStateVariables::EnemyAlive, false);
+	action.reaction.add(WorldStateVariables::WeaponCharged, false);
 	
 	posibleActions.emplace("Disparar", action);
 	action.preConditions.bits = 0;
@@ -166,7 +190,7 @@ void SceneGoap::setUpPossibleActions() {
 
 	//fugir d'un enemic
 	action.cost = 2;
-	action.definition = "Alejarse de enemigo";
+	action.definition = "Alejarse de enemigo\n";
 	action.preConditions.add(WorldStateVariables::EnemyNear, true);
 	action.preConditions.add(WorldStateVariables::AgentAlive, true);
 	action.reaction.add(WorldStateVariables::EnemyNear, false);
@@ -179,6 +203,21 @@ void SceneGoap::setUpPossibleActions() {
 	action.reaction.bits = 0;
 	action.reaction.mask = 0;
 
+	//get bombas
+	action.cost = 3;
+	action.definition = "Coger explosivos\n";
+	action.preConditions.add(WorldStateVariables::AgentHasBomb, false);
+	action.preConditions.add(WorldStateVariables::EnemyNear, false);
+	action.preConditions.add(WorldStateVariables::AgentAlive, true);
+	action.reaction.add(WorldStateVariables::AgentHasBomb, true);
+	action.reaction.add(WorldStateVariables::EnemyAligned, false);
+	action.reaction.add(WorldStateVariables::EnemyVisible, false);
+
+	posibleActions.emplace("GetBomb", action);
+	action.preConditions.bits = 0;
+	action.preConditions.mask = 0;
+	action.reaction.bits = 0;
+	action.reaction.mask = 0;
 }
 
 
