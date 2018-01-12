@@ -207,7 +207,9 @@ void SceneGoap::plan() {
 	system("CLS");
 	setUpWorldState();
 	setUpGoal();
-	cout << Aestrella::Goap(worldState, endState, agents[0]->posibleActions);
+	cout << "Plan:\n";
+
+	cout << "	" <<Aestrella::Goap(worldState, endState, agents[0]->posibleActions);
 }
 
 void SceneGoap::setUpPossibleActions() {
