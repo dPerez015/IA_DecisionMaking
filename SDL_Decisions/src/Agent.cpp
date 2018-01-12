@@ -156,36 +156,42 @@ void Agent::update(Vector2D steering_force, float dtime, SDL_Event *event)
 
 void Agent::drawText() {
 
-	std::string thirstyText = "Thirsty state: " + std::to_string(thirsty);
-	std::string goldText = "Gold State: " + std::to_string(gold);
-	std::string restText = "Rest state: " + std::to_string(rested);
-	std::string counterText = "Counter state: " + std::to_string(timeCounter);
-
-	int heightTxt = 40;
+	std::string thirstyText = "Thirsty: " + std::to_string(thirsty)+"/10";
+	std::string goldText = "Gold: " + std::to_string(gold) + "/3";
+	std::string wealthyText = "Wealthy: " + std::to_string(wealthy);
+	
+	
+	int heightTxt = 24;
+	TTF_Font* Sans = TTF_OpenFont("../res/arial.ttf", 50);
+	if (Sans == NULL) cout << "Arial not found" << endl;
 
 	//First Text
-	TTF_Font* Sans = TTF_OpenFont("../res/arial.ttf", 12);
-	if (Sans == NULL) cout << "Arial not founs" << endl;
 	SDL_Color White = { 255, 255, 255 };
-	SDL_Surface* surfaceMessage = TTF_RenderText_Solid(Sans, "Miner characteristics:", White);
+	SDL_Color Red = { 200,0,0 };
+	SDL_Color Green = { 0,255,0 };
+
+	SDL_Surface* surfaceMessage = TTF_RenderText_Solid(Sans, "Miner data", White);
 	SDL_Texture* Message = SDL_CreateTextureFromSurface(TheApp::Instance()->getRenderer(), surfaceMessage);
 	SDL_Rect Message_rect; //create a rect
-	Message_rect.x = 1000;  //controls the rect's x coordinate 
-	Message_rect.y = 0; // controls the rect's y coordinte
-	Message_rect.w = 200; // controls the width of the rect
-	Message_rect.h = heightTxt; // controls the height of the rect
+	Message_rect.x = 1050;  //controls the rect's x coordinate 
+	Message_rect.y = 200; // controls the rect's y coordinte
+	Message_rect.w = 90; // controls the width of the rect
+	Message_rect.h = 22; // controls the height of the rect
 	SDL_RenderCopy(TheApp::Instance()->getRenderer(), Message, NULL, &Message_rect);
 
 	SDL_FreeSurface(surfaceMessage);
 	SDL_DestroyTexture(Message);
-
+	
 	//Thirsty text
-	SDL_Surface* surfaceMessageThirsty = TTF_RenderText_Solid(Sans, thirstyText.c_str(), White);
+	SDL_Surface* surfaceMessageThirsty;
+	if (thirsty <= minThirsty) {
+		surfaceMessageThirsty = TTF_RenderText_Solid(Sans, thirstyText.c_str(), Red);
+	}else surfaceMessageThirsty = TTF_RenderText_Solid(Sans, thirstyText.c_str(), White);
 	SDL_Texture* MessageThirsty = SDL_CreateTextureFromSurface(TheApp::Instance()->getRenderer(), surfaceMessageThirsty);
 	SDL_Rect Message_rectThirsty; //create a rect
 	Message_rectThirsty.x = 1000;  //controls the rect's x coordinate 
-	Message_rectThirsty.y = 100; // controls the rect's y coordinte
-	Message_rectThirsty.w = 200; // controls the width of the rect
+	Message_rectThirsty.y = 230; // controls the rect's y coordinte
+	Message_rectThirsty.w = thirstyText.size()*9; // controls the width of the rect
 	Message_rectThirsty.h = heightTxt; // controls the height of the rect
 	SDL_RenderCopy(TheApp::Instance()->getRenderer(), MessageThirsty, NULL, &Message_rectThirsty);
 
@@ -197,32 +203,42 @@ void Agent::drawText() {
 	SDL_Texture* MessageGold = SDL_CreateTextureFromSurface(TheApp::Instance()->getRenderer(), surfaceMessageGold);
 	SDL_Rect Message_rectGold; //create a rect
 	Message_rectGold.x = 1000;  //controls the rect's x coordinate 
-	Message_rectGold.y = 200; // controls the rect's y coordinte
-	Message_rectGold.w = 100; // controls the width of the rect
+	Message_rectGold.y = 260; // controls the rect's y coordinte
+	Message_rectGold.w = goldText.size()*9; // controls the width of the rect
 	Message_rectGold.h = heightTxt; // controls the height of the rect
 	SDL_RenderCopy(TheApp::Instance()->getRenderer(), MessageGold, NULL, &Message_rectGold);
 
 	SDL_FreeSurface(surfaceMessageGold);
 	SDL_DestroyTexture(MessageGold);
-	//Rest
-	SDL_Surface* surfaceMessageRest = TTF_RenderText_Solid(Sans, restText.c_str(), White);
+
+	//Wealthy
+	SDL_Surface* surfaceMessageRest;
+	if (wealthy >= maxWealthy) {
+		surfaceMessageRest = TTF_RenderText_Solid(Sans, wealthyText.c_str(), Green);
+	}else surfaceMessageRest = TTF_RenderText_Solid(Sans, wealthyText.c_str(), White);
 	SDL_Texture* MessageRest = SDL_CreateTextureFromSurface(TheApp::Instance()->getRenderer(), surfaceMessageRest);
 	SDL_Rect Message_rectRest; //create a rect
 	Message_rectRest.x = 1000;  //controls the rect's x coordinate 
-	Message_rectRest.y = 300; // controls the rect's y coordinte
-	Message_rectRest.w = 200; // controls the width of the rect
+	Message_rectRest.y = 290; // controls the rect's y coordinte
+	Message_rectRest.w = wealthyText.size()*9; // controls the width of the rect
 	Message_rectRest.h = heightTxt; // controls the height of the rect
 	SDL_RenderCopy(TheApp::Instance()->getRenderer(), MessageRest, NULL, &Message_rectRest);
 
 	SDL_FreeSurface(surfaceMessageRest);
 	SDL_DestroyTexture(MessageRest);
+
 	//Counter
+	std::string counterText;
+	if (state == 1) counterText = "Timer: " + std::to_string(1-timeCounter);
+	else if(state == 2) counterText = "Timer: " + std::to_string(1-timeCounter);
+	else if(state == 3) counterText = "Timer: " + std::to_string(5-timeCounter);
+	
 	SDL_Surface* surfaceMessageCounter = TTF_RenderText_Solid(Sans, counterText.c_str(), White);
 	SDL_Texture* MessageCounter = SDL_CreateTextureFromSurface(TheApp::Instance()->getRenderer(), surfaceMessageCounter);
 	SDL_Rect Message_rectCounter; //create a rect
 	Message_rectCounter.x = 1000;  //controls the rect's x coordinate 
-	Message_rectCounter.y = 400; // controls the rect's y coordinte
-	Message_rectCounter.w = 200; // controls the width of the rect
+	Message_rectCounter.y = 320; // controls the rect's y coordinte
+	Message_rectCounter.w = counterText.size()*9; // controls the width of the rect
 	Message_rectCounter.h = heightTxt; // controls the height of the rect
 	SDL_RenderCopy(TheApp::Instance()->getRenderer(), MessageCounter, NULL, &Message_rectCounter);
 

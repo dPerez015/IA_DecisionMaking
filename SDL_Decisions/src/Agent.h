@@ -51,9 +51,9 @@ public:
 	int maxGold = 3;
 	int wealthy = 0;
 	int maxWealthy = 10;
-	float rested = 0;
-	float maxRested = 5000;
+	float restingTime = 5;
 	float timeCounter =0;
+	int state = 0;
 
 	//GOAP
 	std::vector<Action*> posibleActions;

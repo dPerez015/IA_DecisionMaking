@@ -1,7 +1,8 @@
 #include "Mining.h"
 
 void Mining::onEnter(Agent* agent, ScenePlanning* scene) {
-	std::cout << "Entro en la mina\n";
+	//std::cout << "Entro en la mina\n";
+	agent->state = 0;
 	agent->timeCounter = 0;
 	//CREA MONEDA
 	scene->coinPosition = Vector2D((float)(rand() % ((SRC_WIDTH / CELL_SIZE) - 5)) + 4, (float)(rand() % 4) + 1);
@@ -10,7 +11,7 @@ void Mining::onEnter(Agent* agent, ScenePlanning* scene) {
 }
 
 void Mining::Update(Agent* agent, ScenePlanning* scene) {
-	std::cout << agent->gold << std::endl;
+	
 	agent->timeCounter += scene->deltaTime;
 
 	if (agent->thirsty <= agent->minThirsty) {

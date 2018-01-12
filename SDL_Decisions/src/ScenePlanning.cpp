@@ -221,8 +221,8 @@ void ScenePlanning::draw()
 
 		//drawGraph();
 		//drawGraphConexions();
-		SDL_SetRenderDrawColor(TheApp::Instance()->getRenderer(), 255, 255, 255, 127);
-		/*for (int i = 0; i < SRC_WIDTH; i+=CELL_SIZE)
+		/*SDL_SetRenderDrawColor(TheApp::Instance()->getRenderer(), 255, 255, 255, 127);
+		for (int i = 0; i < SRC_WIDTH; i+=CELL_SIZE)
 		{
 			SDL_RenderDrawLine(TheApp::Instance()->getRenderer(), i, 0, i, SRC_HEIGHT);
 		}
