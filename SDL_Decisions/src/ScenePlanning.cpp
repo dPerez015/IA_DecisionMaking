@@ -26,8 +26,8 @@ ScenePlanning::ScenePlanning()
 
 	// set the coin in a random cell (but at least 3 cells far from the agent)
 	coinPosition = Vector2D(-1,-1);
-	while ((!isValidCell(coinPosition)) || (Vector2D::Distance(coinPosition, rand_cell)<3)) 
-		coinPosition = Vector2D((float)(rand() % num_cell_x), (float)(rand() % num_cell_y));
+	/*while ((!isValidCell(coinPosition)) || (Vector2D::Distance(coinPosition, rand_cell)<3)) 
+		coinPosition = Vector2D((float)(rand() % (num_cell_x - 5)) + 4, (float)(rand() % 4) + 1);*/
 	
 	// PathFollowing next Target
 	currentTarget = Vector2D(0, 0);
@@ -180,7 +180,7 @@ void ScenePlanning::update(float dtime, SDL_Event *event)
 					{
 						coinPosition = Vector2D(-1, -1);
 						while ((!isValidCell(coinPosition)) || (Vector2D::Distance(coinPosition, pix2cell(agents[0]->getPosition()))<3))
-							coinPosition = Vector2D((float)(rand() % num_cell_x), (float)(rand() % num_cell_y));
+							coinPosition = Vector2D((float)(rand() % (num_cell_x-5))+4, (float)(rand() % 4)+1);
 					}
 				}
 				else
@@ -220,14 +220,14 @@ void ScenePlanning::draw()
 		//drawGraph();
 		//drawGraphConexions();
 		SDL_SetRenderDrawColor(TheApp::Instance()->getRenderer(), 255, 255, 255, 127);
-		for (int i = 0; i < SRC_WIDTH; i+=CELL_SIZE)
+		/*for (int i = 0; i < SRC_WIDTH; i+=CELL_SIZE)
 		{
 			SDL_RenderDrawLine(TheApp::Instance()->getRenderer(), i, 0, i, SRC_HEIGHT);
 		}
 		for (int j = 0; j < SRC_HEIGHT; j = j += CELL_SIZE)
 		{
 			SDL_RenderDrawLine(TheApp::Instance()->getRenderer(), 0, j, SRC_WIDTH, j);
-		}
+		}*/
 	}
 
 	for (int i = 0; i < (int)path.points.size(); i++)
