@@ -17,8 +17,43 @@ ScenePlanning::ScenePlanning()
 	Agent *agent = new Agent(this);
 	agent->loadSpriteTexture("../res/soldier.png", 4);
 	agents.push_back(agent);
-	
 
+	//Buildings
+	SDL_Surface *surfaceHouse = IMG_Load("../res/Home.png");
+	SDL_Texture *textureHome = SDL_CreateTextureFromSurface(TheApp::Instance()->getRenderer(), surfaceHouse);
+	SDL_FreeSurface(surfaceHouse);
+
+	SDL_Rect destinationHome;
+	destinationHome.x = 0;
+	destinationHome.y = 0;
+	destinationHome.w = 960;
+	destinationHome.h = 705;
+
+	SDL_RenderCopy(TheApp::Instance()->getRenderer(), textureHome, nullptr, &destinationHome);
+
+	SDL_Surface *surfaceSaloon = IMG_Load("../res/Saloon.png");
+	SDL_Texture *textureSaloon = SDL_CreateTextureFromSurface(TheApp::Instance()->getRenderer(), surfaceSaloon);
+	SDL_FreeSurface(surfaceSaloon);
+
+	SDL_Rect destinationSaloon;
+	destinationSaloon.x = 0;
+	destinationSaloon.y = 50;
+	destinationSaloon.w = 960;
+	destinationSaloon.h = 705;
+
+	SDL_RenderCopy(TheApp::Instance()->getRenderer(), textureSaloon, nullptr, &destinationSaloon);
+
+	SDL_Surface *surfaceBank = IMG_Load("../res/Bank.png");
+	SDL_Texture *textureBank = SDL_CreateTextureFromSurface(TheApp::Instance()->getRenderer(), surfaceBank);
+	SDL_FreeSurface(surfaceBank);
+
+	SDL_Rect destinationBank;
+	destinationBank.x = 0;
+	destinationBank.y = 0;
+	destinationBank.w = 960;
+	destinationBank.h = 705;
+
+	SDL_RenderCopy(TheApp::Instance()->getRenderer(), textureBank, nullptr, &destinationBank);
 
 	// set agent position coords to the center of a random cell
 	Vector2D rand_cell(-1,-1);
