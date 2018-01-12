@@ -18,6 +18,7 @@ void Mining::Update(Agent* agent, ScenePlanning* scene) {
 	}
 	else {
 		//PATHFINDING CAP A LA MONEDA
+		//if(scene->path->points)
 
 		if (agent->timeCounter >= 5) { //5 segons
 			agent->thirsty -= 1;
