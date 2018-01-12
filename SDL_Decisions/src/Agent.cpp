@@ -158,8 +158,8 @@ void Agent::drawText() {
 
 	std::string thirstyText = "Thirsty state: " + std::to_string(thirsty);
 	std::string goldText = "Gold State: " + std::to_string(gold);
-	std::string restText = "Rest state: " + std::to_string(rested);
-	std::string counterText = "Counter state: " + std::to_string(timeCounter);
+	std::string restText = "Rest state: " + std::to_string((int)rested);
+	std::string counterText = "Counter state: " + std::to_string((int)timeCounter);
 
 	int heightTxt = 40;
 
@@ -167,17 +167,6 @@ void Agent::drawText() {
 	TTF_Font* Sans = TTF_OpenFont("../res/arial.ttf", 12);
 	if (Sans == NULL) cout << "Arial not founs" << endl;
 	SDL_Color White = { 255, 255, 255 };
-	SDL_Surface* surfaceMessage = TTF_RenderText_Solid(Sans, "Miner characteristics:", White);
-	SDL_Texture* Message = SDL_CreateTextureFromSurface(TheApp::Instance()->getRenderer(), surfaceMessage);
-	SDL_Rect Message_rect; //create a rect
-	Message_rect.x = 1000;  //controls the rect's x coordinate 
-	Message_rect.y = 0; // controls the rect's y coordinte
-	Message_rect.w = 200; // controls the width of the rect
-	Message_rect.h = heightTxt; // controls the height of the rect
-	SDL_RenderCopy(TheApp::Instance()->getRenderer(), Message, NULL, &Message_rect);
-
-	SDL_FreeSurface(surfaceMessage);
-	SDL_DestroyTexture(Message);
 
 	//Thirsty text
 	SDL_Surface* surfaceMessageThirsty = TTF_RenderText_Solid(Sans, thirstyText.c_str(), White);
